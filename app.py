@@ -109,12 +109,23 @@ con.execute("CREATE TABLE IF NOT EXISTS battle_rewards(id INTEGER PRIMARY KEY, c
 con.commit()
 def cfg():
     return {
-        "key": os.getenv("ASI_ONE_API_KEY", "").strip(),
-        "base": os.getenv(
-            "ASI_ONE_BASE_URL",
-            "https://openrouter.ai/api/v1"
+        "key": (
+            st.secrets.get("ASI_ONE_API_KEY", "")
+            or os.getenv("ASI_ONE_API_KEY", "")
+        ).strip(),
+        "base": (
+            st.secrets.get(
+                "ASI_ONE_BASE_URL",
+                os.getenv(
+                    "ASI_ONE_BASE_URL",
+                    "https://openrouter.ai/api/v1"
+                )
+            )
         ).rstrip("/"),
-        "model": os.getenv("ASI_ONE_MODEL", "openrouter/free")
+        "model": st.secrets.get(
+            "ASI_ONE_MODEL",
+            os.getenv("ASI_ONE_MODEL", "openrouter/free")
+        )
     }
 
 
